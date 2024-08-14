@@ -4,6 +4,7 @@ import {
   EaCPreactAppProcessor,
   EaCProjectAsCode,
   EaCProjectResolverConfiguration,
+  EaCRedirectProcessor,
 } from '@fathym/eac';
 
 export default class DocumentViewerRuntimePlugin implements EaCRuntimePlugin {
@@ -57,6 +58,10 @@ export default class DocumentViewerRuntimePlugin implements EaCRuntimePlugin {
                       },
                     }
                     : {}),
+                  pdfViewer: {
+                    PathPattern: '/pdf-js/pdf-worker',
+                    Priority: 500,
+                  },
                 },
               } as EaCProjectAsCode,
             }
@@ -75,6 +80,15 @@ export default class DocumentViewerRuntimePlugin implements EaCRuntimePlugin {
               },
             }
             : {}),
+          pdfViewer: {
+            Details: {},
+            Processor: {
+              Type: 'Redirect',
+              Permanent: true,
+              PreserveMethod: true,
+              Redirect: 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.5.136/pdf.worker.mjs',
+            } as EaCRedirectProcessor,
+          },
         },
         DFS: {
           'local:apps/doc-viewer': {
@@ -83,7 +97,7 @@ export default class DocumentViewerRuntimePlugin implements EaCRuntimePlugin {
             DefaultFile: 'index.tsx',
             Extensions: ['tsx'],
             WorkerPath: import.meta.resolve(
-              '@fathym/eac-runtime/src/runtime/dfs/workers/EaCLocalDistributedFileSystemWorker.ts',
+              '@fathym/eac-runtime/workers/local',
             ),
           } as EaCLocalDistributedFileSystem,
           'local:src': {
@@ -91,7 +105,7 @@ export default class DocumentViewerRuntimePlugin implements EaCRuntimePlugin {
             FileRoot: './src/',
             Extensions: ['tsx'],
             WorkerPath: import.meta.resolve(
-              '@fathym/eac-runtime/src/runtime/dfs/workers/EaCLocalDistributedFileSystemWorker.ts',
+              '@fathym/eac-runtime/workers/local',
             ),
           } as EaCLocalDistributedFileSystem,
         },

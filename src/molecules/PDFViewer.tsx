@@ -1,6 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
-import { JSX } from 'preact';
-import { useEffect, useRef, useState } from 'preact/hooks';
+import { JSX, useEffect, useRef, useState } from '../src.deps.ts';
 import { classSet, pdfjs } from '../src.deps.ts';
 
 export const IsIsland = true;

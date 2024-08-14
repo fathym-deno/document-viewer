@@ -29,5 +29,5 @@ export const handler: EaCRuntimeHandlerResult<unknown, IndexData> = {
 };
 
 export default function Index({ Data }: PageProps<IndexData>) {
-  return <DocumentViewer fileUrl={Data.FileURL} />;
+  return <DocumentViewer fileType='pdf' fileUrl={Data.FileURL} />;
 }
