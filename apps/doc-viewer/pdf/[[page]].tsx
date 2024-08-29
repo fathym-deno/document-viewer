@@ -1,5 +1,5 @@
 import { pdfjs } from '../../../src/src.deps.ts';
-import { STATUS_CODE } from 'https://deno.land/std@0.220.1/http/status.ts';
+import { STATUS_CODE } from '@std/http';
 import { EaCRuntimeHandlerResult } from '@fathym/eac-runtime';
 
 export type PDFData = {

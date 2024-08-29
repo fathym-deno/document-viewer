@@ -1,11 +1,11 @@
 import { EaCRuntimeConfig, EaCRuntimePlugin, EaCRuntimePluginConfig } from '@fathym/eac-runtime';
 import {
-  EaCLocalDistributedFileSystem,
   EaCPreactAppProcessor,
   EaCProjectAsCode,
   EaCProjectResolverConfiguration,
   EaCRedirectProcessor,
-} from '@fathym/eac';
+} from '@fathym/eac/applications';
+import { EaCLocalDistributedFileSystem } from '@fathym/eac/dfs';
 
 export default class DocumentViewerRuntimePlugin implements EaCRuntimePlugin {
   constructor(

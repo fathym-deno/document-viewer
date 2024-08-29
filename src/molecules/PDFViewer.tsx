@@ -1,14 +1,18 @@
-// deno-lint-ignore-file no-explicit-any
 import { JSX, useEffect, useRef, useState } from '../src.deps.ts';
 import { classSet, pdfjs } from '../src.deps.ts';
 
 export const IsIsland = true;
 
 export type PDFViewerProps = {
+  onPageChange?: (page: number) => void;
+
+  page?: number;
+
   pdfUrl: string;
 } & JSX.HTMLAttributes<HTMLDivElement>;
 
 export default function PDFViewer({
+  page,
   pdfUrl,
   ...props
 }: PDFViewerProps): JSX.Element {
@@ -16,79 +20,103 @@ export default function PDFViewer({
 
   const [numPages, setNumPages] = useState(0);
 
-  const [pageNumber, setPageNumber] = useState(1);
+  const [pageNumber, setPageNumber] = useState<number>(0);
+
+  const [pdf, setPDF] = useState<pdfjs.PDFDocumentProxy>();
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const loadDocument = async (url: string) => {
     try {
       const loadingTask = pdfjs.getDocument(url);
+
       const pdf = await loadingTask.promise;
+
       setNumPages(pdf.numPages);
-      renderPage(pdf, 1);
+
+      setPDF(pdf);
     } catch (error) {
       console.error('Error loading PDF:', error);
     }
   };
 
-  const renderPage = async (pdf: any, pageNum: number) => {
-    const page = await pdf.getPage(pageNum);
-    const viewport = page.getViewport({ scale: 1.5 });
-    const canvas = canvasRef.current;
-    if (canvas) {
-      const context = canvas.getContext('2d');
-      canvas.height = viewport.height;
-      canvas.width = viewport.width;
-
-      const renderContext = {
-        canvasContext: context,
-        viewport: viewport,
-      };
-      await page.render(renderContext).promise;
-    }
-  };
-
-  const goToPage = (offset: number) => {
+  const changePage = (offset: number) => {
     const newPageNumber = pageNumber + offset;
+
+    setPageNumber(newPageNumber);
+  };
+
+  const goToPage = (newPageNumber: number) => {
     if (newPageNumber > 0 && newPageNumber <= numPages) {
-      setPageNumber(newPageNumber);
-      loadDocumentPage(newPageNumber);
+      renderPage(newPageNumber);
+
+      props.onPageChange?.(newPageNumber);
     }
   };
 
-  const loadDocumentPage = async (pageNum: number) => {
-    if (pdfUrl) {
-      const loadingTask = pdfjs.getDocument(pdfUrl);
-      const pdf = await loadingTask.promise;
-      renderPage(pdf, pageNum);
+  const renderPage = async (pageNum: number) => {
+    if (pdf) {
+      const page = await pdf.getPage(pageNum);
+
+      const viewport = page.getViewport({ scale: 1.5 });
+
+      const canvas = canvasRef.current;
+
+      if (canvas) {
+        const context = canvas.getContext('2d');
+
+        canvas.height = viewport.height;
+
+        canvas.width = viewport.width;
+
+        const renderContext = {
+          canvasContext: context!,
+          viewport: viewport,
+        };
+
+        await page.render(renderContext).promise;
+      }
     }
   };
 
   useEffect(() => {
-    console.log('PDFViewer');
     if (pdfUrl) {
-      console.log(pdfUrl);
       loadDocument(pdfUrl);
     }
   }, [pdfUrl]);
 
-  return (
-    <div {...props} class={classSet(['-:p-1'], props)}>
-      <canvas
-        ref={canvasRef}
-        style={{ border: '1px solid black', display: 'block', margin: 'auto' }}
-      />
+  useEffect(() => {
+    if (pdf) {
+      setPageNumber(page ?? 1);
+    }
+  }, [pdf]);
 
-      <div style={{ textAlign: 'center', marginTop: '1rem' }}>
-        <button onClick={() => goToPage(-1)} disabled={pageNumber <= 1}>
+  useEffect(() => {
+    if (pdf) {
+      setPageNumber(page ?? 1);
+    }
+  }, [page]);
+
+  useEffect(() => {
+    if (pageNumber) {
+      goToPage(pageNumber ?? 1);
+    }
+  }, [pageNumber]);
+
+  return (
+    <div {...props} class={classSet(['-:p-1 -:relative'], props)}>
+      <canvas ref={canvasRef} class='block m-auto' />
+
+      <div class='my-2 bg-slate-50 dark:bg-slate-900 text-center m-1 sticky bottom-0'>
+        <button onClick={() => changePage(-1)} disabled={pageNumber <= 1}>
           Previous
         </button>
 
-        <span style={{ margin: '0 1rem' }}>
+        <span class='mx-3'>
           Page {pageNumber} of {numPages}
         </span>
 
-        <button onClick={() => goToPage(1)} disabled={pageNumber >= numPages}>
+        <button onClick={() => changePage(1)} disabled={pageNumber >= numPages}>
           Next
         </button>
       </div>

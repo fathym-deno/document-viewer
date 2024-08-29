@@ -1,6 +1,6 @@
 import { EaCRuntimeHandlerResult, PageProps } from '@fathym/eac-runtime';
+import { STATUS_CODE } from '@std/http';
 import DocumentViewer from '../../src/organisms/DocumentViewer.tsx';
-import { STATUS_CODE } from 'https://deno.land/std@0.220.1/http/status.ts';
 
 export type IndexData = {
   FileURL: string;
