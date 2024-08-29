@@ -107,12 +107,12 @@ export default function PDFViewer({
     <div {...props} class={classSet(['-:p-1 -:relative'], props)}>
       <canvas ref={canvasRef} class='block m-auto' />
 
-      <div class='my-2 bg-slate-50 dark:bg-slate-900 text-center m-1 sticky bottom-0'>
+      <div class='py-2 bg-slate-50 dark:bg-slate-900 text-center m-1 sticky bottom-0'>
         <button onClick={() => changePage(-1)} disabled={pageNumber <= 1}>
           Previous
         </button>
 
-        <span class='mx-3'>
+        <span class='mx-6'>
           Page {pageNumber} of {numPages}
         </span>
 
