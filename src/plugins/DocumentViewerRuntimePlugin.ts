@@ -5,7 +5,7 @@ import {
   EaCProjectResolverConfiguration,
   EaCRedirectProcessor,
 } from '@fathym/eac/applications';
-import { EaCLocalDistributedFileSystem } from '@fathym/eac/dfs';
+import type { EaCLocalDistributedFileSystemDetails } from '@fathym/eac/dfs';
 
 export default class DocumentViewerRuntimePlugin implements EaCRuntimePlugin {
   constructor(
@@ -92,22 +92,26 @@ export default class DocumentViewerRuntimePlugin implements EaCRuntimePlugin {
         },
         DFS: {
           'local:apps/doc-viewer': {
-            Type: 'Local',
-            FileRoot: './apps/doc-viewer/',
-            DefaultFile: 'index.tsx',
-            Extensions: ['tsx'],
-            WorkerPath: import.meta.resolve(
-              '@fathym/eac-runtime/workers/local',
-            ),
-          } as EaCLocalDistributedFileSystem,
+            Details: {
+              Type: 'Local',
+              FileRoot: './apps/doc-viewer/',
+              DefaultFile: 'index.tsx',
+              Extensions: ['tsx'],
+              WorkerPath: import.meta.resolve(
+                '@fathym/eac-runtime/workers/local',
+              ),
+            } as EaCLocalDistributedFileSystemDetails,
+          },
           'local:src': {
-            Type: 'Local',
-            FileRoot: './src/',
-            Extensions: ['tsx'],
-            WorkerPath: import.meta.resolve(
-              '@fathym/eac-runtime/workers/local',
-            ),
-          } as EaCLocalDistributedFileSystem,
+            Details: {
+              Type: 'Local',
+              FileRoot: './src/',
+              Extensions: ['tsx'],
+              WorkerPath: import.meta.resolve(
+                '@fathym/eac-runtime/workers/local',
+              ),
+            } as EaCLocalDistributedFileSystemDetails,
+          },
         },
       },
     };

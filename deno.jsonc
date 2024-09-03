@@ -26,9 +26,9 @@
     "version": "deno run -A jsr:@fathym/common@0/build/version"
   },
   "imports": {
-    "@fathym/common": "jsr:@fathym/common@0",
-    "@fathym/eac": "jsr:@fathym/eac@0",
-    "@fathym/eac-runtime": "jsr:@fathym/eac-runtime@0",
+    "@fathym/common": "jsr:@fathym/common@0.2.50",
+    "@fathym/eac": "jsr:@fathym/eac@0.1.38",
+    "@fathym/eac-runtime": "jsr:@fathym/eac-runtime@0.1.21",
     "preact": "npm:preact@10.20.1",
     "preact/hooks": "npm:preact@10.20.1/hooks",
     "preact-render-to-string": "npm:preact-render-to-string@6.4.0",
