@@ -4,7 +4,7 @@ import { classSet, pdfjs } from '../src.deps.ts';
 export const IsIsland = true;
 
 export type PDFViewerProps = {
-  onPageChange?: (page: number) => void;
+  onPageChange?: (page: number, content: string) => void;
 
   page?: number;
 
@@ -49,8 +49,6 @@ export default function PDFViewer({
   const goToPage = (newPageNumber: number) => {
     if (newPageNumber > 0 && newPageNumber <= numPages) {
       renderPage(newPageNumber);
-
-      props.onPageChange?.(newPageNumber);
     }
   };
 
@@ -75,6 +73,20 @@ export default function PDFViewer({
         };
 
         await page.render(renderContext).promise;
+
+        const pageContentText = await page.getTextContent();
+
+        const pageContent = pageContentText.items.reduce((acc, text) => {
+          console.log(text);
+          // deno-lint-ignore no-explicit-any
+          return `${acc}${(text as any).str}`;
+        }, '');
+        console.log(pageContent);
+
+        props.onPageChange?.(
+          pageNum,
+          pageContent,
+        );
       }
     }
   };

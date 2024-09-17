@@ -8,7 +8,7 @@ export type DocumentViewerProps = {
 
   fileUrl: string;
 
-  onPageChange?: (page: number) => void;
+  onPageChange?: (page: number, content: string) => void;
 
   page?: number;
 } & JSX.HTMLAttributes<HTMLDivElement>;
