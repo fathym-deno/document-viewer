@@ -1,11 +1,13 @@
-import { EaCRuntimeConfig, EaCRuntimePlugin, EaCRuntimePluginConfig } from '@fathym/eac-runtime';
+import { EaCRuntimeConfig } from '@fathym/eac/runtime/config';
+import { EaCRuntimePlugin, EaCRuntimePluginConfig } from '@fathym/eac/runtime/plugins';
 import {
-  EaCPreactAppProcessor,
   EaCProjectAsCode,
   EaCProjectResolverConfiguration,
-  EaCRedirectProcessor,
-} from '@fathym/eac/applications';
-import type { EaCLocalDistributedFileSystemDetails } from '@fathym/eac/dfs';
+  EverythingAsCodeApplications,
+} from '@fathym/eac-applications';
+import { EaCPreactAppProcessor, EaCRedirectProcessor } from '@fathym/eac-applications/processors';
+import type { EaCLocalDistributedFileSystemDetails, EverythingAsCodeDFS } from '@fathym/eac-dfs';
+import { EverythingAsCode } from '@fathym/eac';
 
 export default class DocumentViewerRuntimePlugin implements EaCRuntimePlugin {
   constructor(
@@ -15,7 +17,9 @@ export default class DocumentViewerRuntimePlugin implements EaCRuntimePlugin {
   ) {}
 
   public Setup(config: EaCRuntimeConfig) {
-    const pluginConfig: EaCRuntimePluginConfig = {
+    const pluginConfig: EaCRuntimePluginConfig<
+      EverythingAsCode & EverythingAsCodeApplications & EverythingAsCodeDFS
+    > = {
       Name: DocumentViewerRuntimePlugin.name,
       Plugins: [],
       EaC: {
@@ -90,7 +94,7 @@ export default class DocumentViewerRuntimePlugin implements EaCRuntimePlugin {
             } as EaCRedirectProcessor,
           },
         },
-        DFS: {
+        DFSs: {
           'local:apps/doc-viewer': {
             Details: {
               Type: 'Local',

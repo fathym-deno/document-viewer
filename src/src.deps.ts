@@ -1,7 +1,7 @@
 export { type JSX } from 'npm:preact@10.20.1';
 export { useEffect, useRef, useState } from 'npm:preact@10.20.1/hooks';
 
-export * from 'jsr:@fathym/common@0.2.50';
+export * from 'jsr:@fathym/common@0.2.167';
 
 export * from 'jsr:@fathym/atomic@0.0.168';
 

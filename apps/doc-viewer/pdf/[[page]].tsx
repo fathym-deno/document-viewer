@@ -1,12 +1,12 @@
 import { pdfjs } from '../../../src/src.deps.ts';
 import { STATUS_CODE } from '@std/http';
-import { EaCRuntimeHandlerResult } from '@fathym/eac-runtime';
+import { EaCRuntimeHandlerSet } from '@fathym/eac/runtime/pipelines';
 
 export type PDFData = {
   View: string;
 };
 
-export const handler: EaCRuntimeHandlerResult<unknown, PDFData> = {
+export const handler: EaCRuntimeHandlerSet<unknown, PDFData> = {
   async GET(_req, ctx) {
     const pageNum = JSON.parse(ctx.Params.page || '1') as number;
 

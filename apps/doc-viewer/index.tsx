@@ -1,4 +1,5 @@
-import { EaCRuntimeHandlerResult, PageProps } from '@fathym/eac-runtime';
+import { EaCRuntimeHandlerSet } from '@fathym/eac/runtime/pipelines';
+import { PageProps } from '@fathym/eac-applications/runtime/preact';
 import { STATUS_CODE } from '@std/http';
 import DocumentViewer from '../../src/organisms/DocumentViewer.tsx';
 
@@ -6,7 +7,7 @@ export type IndexData = {
   FileURL: string;
 };
 
-export const handler: EaCRuntimeHandlerResult<unknown, IndexData> = {
+export const handler: EaCRuntimeHandlerSet<unknown, IndexData> = {
   GET: (_req, ctx) => {
     const fileUrl = new URLSearchParams(ctx.Runtime.URLMatch.Search).get(
       'fileUrl',
