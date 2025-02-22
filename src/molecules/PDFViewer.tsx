@@ -118,7 +118,7 @@ export default function PDFViewer({
       <canvas ref={canvasRef} class='block m-auto' />
 
       <div class='py-2 bg-slate-50 dark:bg-slate-900 text-center m-1 sticky bottom-0'>
-        <button onClick={() => changePage(-1)} disabled={pageNumber <= 1}>
+        <button type='button' onClick={() => changePage(-1)} disabled={pageNumber <= 1}>
           Previous
         </button>
 
@@ -126,7 +126,7 @@ export default function PDFViewer({
           Page {pageNumber} of {numPages}
         </span>
 
-        <button onClick={() => changePage(1)} disabled={pageNumber >= numPages}>
+        <button type='button' onClick={() => changePage(1)} disabled={pageNumber >= numPages}>
           Next
         </button>
       </div>
